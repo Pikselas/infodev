@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PieChart from './PieChart'
 import { ChartItem } from './PieChart';
 import { create_api_request } from './Authenticated';
@@ -12,7 +12,7 @@ async function get()
 function Dashboard1()
 {
     let [data,setData] = useState<ChartItem[]>([]);
-
+    let [clinic_options,setClinics] = useState<{uid:string , clinic_name:string}[]>([]);
     let fetch_data = async (id:string)=>
         {
 
@@ -40,8 +40,18 @@ function Dashboard1()
           });
           setData(dt);
         };
-      
-        let onchng = (id: string) => { fetch_data(id) };
+    const fetch_clinics = async ()=>
+      {
+        let data = await(await create_api_request("http://127.0.0.1:5000/api/get_clinics")).json()
+        console.log(data);
+        setClinics(data);
+      };
+
+      useEffect(()=>
+        {
+          fetch_clinics();
+        },[])
+    let onchng = (id: string) => { fetch_data(id) };
 
     return (
     <div className="main-panel">
@@ -56,8 +66,20 @@ function Dashboard1()
               </div>
               <div className="card-body">
               <div className="form-group">
-                <label htmlFor="email">Input ID</label>
-                <input onChange={(e) => onchng(e.target.value)} type="text" className="form-control" id="id" placeholder="Enter ID"/>
+                <label htmlFor="exampleFormControlSelect1">Example select</label>
+                <select className="form-control" onChange={(e)=>onchng(e.target.value)}>
+                  {
+                    clinic_options.map((clinic) => (
+                      <option key={clinic.uid} value={clinic.uid}>
+                        {clinic.clinic_name}
+                      </option>
+                    ))
+                  }
+                </select>
+              </div>
+              <div className="form-group">
+                {/* <label htmlFor="email">Input ID</label>
+                <input onChange={(e) => onchng(e.target.value)} type="text" className="form-control" id="id" placeholder="Enter ID"/> */}
                 <div style={{ width: "100%", height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                     <PieChart data={ data } handle_func={(data:ChartItem)=>{}} />
                 </div>

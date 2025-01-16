@@ -65,11 +65,6 @@ def login():
     else:
         return jsonify({"msg": "Database connection failed"}), 500
 
-@app.route('/api/get', methods=['POST'])
-@jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
 
 @app.route("/api/get_chart_data",methods=["POST"])
 @jwt_required()
@@ -82,6 +77,16 @@ def get_chart_data():
         return jsonify(data), 200
     else:
         return jsonify({"msg": "Failed to fetch data from external API"}), 500
+
+@app.route("/api/get_clinics" , methods=["POST"])
+@jwt_required()
+def get_clinics():
+    connection = create_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT uid , clinic_name FROM MASTER_CLINIC")
+    res = cursor.fetchall()
+    cursor.close()
+    return jsonify(res) , 200
 
 def fetch_sum_data(from_date:str , to_date:str,clinic_id:int):
     connection = create_connection()
