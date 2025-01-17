@@ -1,6 +1,6 @@
-import logo from "./assets/logo.png"
-import profile2 from "./assets/profile2.jpg"
-import profile from "./assets/profile.jpg"
+import logo from "../assets/logo.png"
+import profile2 from "../assets/profile2.jpg"
+import profile from "../assets/profile.jpg"
 
 function Header() {
   return (

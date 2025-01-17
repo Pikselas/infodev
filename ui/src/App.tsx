@@ -2,11 +2,10 @@
 // import './App.css'
 
 import {BrowserRouter } from 'react-router-dom';
-import AppRoutes from './Routes';
-import { LoggedIn , NotLoggedIn } from './Authenticated';
-import Login1 from './Login1';
-import Header from './Header';
-import SideBar from './Sidebar';
+import AppRoutes from './Routes/Routes';
+import { LoggedIn , NotLoggedIn } from './Utils/Authenticated';
+import Login1 from './Login';
+import MainLayout from './Layout/MainLayout';
 
 function App() {
 
@@ -14,11 +13,9 @@ function App() {
     // <DashBoard/>
     <BrowserRouter>
         {/* <LoggedIn> */}
-          <div className="wrapper">
-              <Header/>
-              <SideBar/>
-              <AppRoutes/>
-          </div>
+          <MainLayout>
+            <AppRoutes/>
+          </MainLayout>
         {/* </LoggedIn> */}
         <NotLoggedIn>
           <Login1/>
