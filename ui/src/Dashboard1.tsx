@@ -62,26 +62,28 @@ function Dashboard1()
     return (
     <div className="main-panel">
     <div className="content">
-      <div className="container-fluid">
-        <h4 className="page-title">Dashboard</h4>
+      <div className="container-fluid">       
         <div className="row">
           <div className="col-md-12">
-            <div className="card">
-              <div className="card-header">
-                <div className="card-title">Table</div>
-              </div>
+            <div className="card">             
               <div className="card-body">
               <form onSubmit={handle_submit}>
-              <div className="form-group">
+                <div class="row">
+                <div className="col-md-3">
+                <div className="form-group">
                   <label htmlFor="fromDate">From Date</label>
                   <input type="date" className="form-control" name="from_date" />
                 </div>
-                <div className="form-group">
+                  </div>
+                  <div class="col-md-3">
+                  <div className="form-group">
                   <label htmlFor="toDate">To Date</label>
                   <input type="date" className="form-control" name="to_date" />
                 </div>
-              <div className="form-group">
-                <label>select clinic</label>
+                  </div>
+                  <div class="col-md-3">
+                  <div className="form-group">
+                <label>Select Clinic</label>
                 <select className="form-control" name="clinic_id">
                   {
                     clinic_options.map((clinic) => (
@@ -92,11 +94,15 @@ function Dashboard1()
                   }
                 </select>
               </div>
-              <div className="form-group">
+                  </div>                  
+                  <div class="col-md-3">
+                  <div className="form-group mt-4">
                 <button className="btn btn-primary" type="submit">
                   Submit
                 </button>
               </div>
+                  </div>
+                </div>  
               </form>
 
               <div className="form-group">
@@ -106,6 +112,66 @@ function Dashboard1()
                     <PieChart data={ data } handle_func={(data:ChartItem)=>{}} />
                 </div>
                 </div>
+
+                <table class="table table-hover">
+
+                  <thead>
+
+                    <tr>
+
+                      <th scope="col">#</th>
+
+                      <th scope="col">First</th>
+
+                      <th scope="col">Last</th>
+
+                      <th scope="col">Handle</th>
+
+                    </tr>
+
+                  </thead>
+
+                  <tbody>
+
+                    <tr>
+
+                      <td>1</td>
+
+                      <td>Mark</td>
+
+                      <td>Otto</td>
+
+                      <td>@mdo</td>
+
+                    </tr>
+
+                    <tr>
+
+                      <td>2</td>
+
+                      <td>Jacob</td>
+
+                      <td>Thornton</td>
+
+                      <td>@fat</td>
+
+                    </tr>
+
+                    <tr>
+
+                      <td>3</td>
+
+                      <td colspan="2">Larry the Bird</td>
+
+                      <td>@twitter</td>
+
+                    </tr>
+
+                  </tbody>
+
+                </table>
+
+
               </div>
             </div>
           </div>

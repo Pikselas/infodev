@@ -13,13 +13,13 @@ function App() {
   return (
     // <DashBoard/>
     <BrowserRouter>
-        <LoggedIn>
+        {/* <LoggedIn> */}
           <div className="wrapper">
               <Header/>
               <SideBar/>
               <AppRoutes/>
           </div>
-        </LoggedIn>
+        {/* </LoggedIn> */}
         <NotLoggedIn>
           <Login1/>
         </NotLoggedIn>
