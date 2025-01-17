@@ -1,19 +1,14 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PieChart from './PieChart'
 import { ChartItem } from './PieChart';
 import { create_api_request } from './Authenticated';
 
-async function get()
-{
-  let data = await create_api_request("http://127.0.0.1:5000/api/get")
-  console.log(await data.json())
-}
 
 function Dashboard1()
 {
     let [data,setData] = useState<ChartItem[]>([]);
     let [clinic_options,setClinics] = useState<{uid:string , clinic_name:string}[]>([]);
-    let fetch_data = async (id:string)=>
+    let fetch_data = async (id:string , from:string,to:string)=>
         {
 
           // get();
@@ -21,7 +16,7 @@ function Dashboard1()
           // const api_url = "https://ncerp.in/api/swapi/dsr_list.php?from_date=01-12-2024&to_date=31-12-2024&clinic_uid=" + id;
           // let d = await (await fetch(api_url)).json();
           
-          let d = await (await create_api_request("http://127.0.0.1:5000/api/get_chart_d" , {clinic_id:id})).json()
+          let d = await (await create_api_request("http://127.0.0.1:5000/api/get_chart_d" , {clinic_id:id,from_date:from,to_date:to})).json()
           
           let dt:ChartItem[] = [];
           type d_type = {"service_name":string , "sum_net": Number};
@@ -47,12 +42,23 @@ function Dashboard1()
         setClinics(data);
       };
 
-      useEffect(()=>
-        {
-          fetch_clinics();
-        },[])
-    let onchng = (id: string) => { fetch_data(id) };
+    const handle_submit = (e:React.FormEvent) =>
+    {
+      e.preventDefault();
+      let frm_data = new FormData(e.target as HTMLFormElement);
+      let from_date = frm_data.get("from_date") as string;
+      let to_date = frm_data.get("to_date") as string;
+      let clinic_id = frm_data.get("clinic_id") as string;
 
+      // console.log(from_date , to_date , clinic_id);
+
+      fetch_data(clinic_id, from_date, to_date);
+    };
+
+    useEffect(()=>
+      {
+        fetch_clinics();
+      },[])
     return (
     <div className="main-panel">
     <div className="content">
@@ -65,9 +71,18 @@ function Dashboard1()
                 <div className="card-title">Table</div>
               </div>
               <div className="card-body">
+              <form onSubmit={handle_submit}>
               <div className="form-group">
-                <label htmlFor="exampleFormControlSelect1">Example select</label>
-                <select className="form-control" onChange={(e)=>onchng(e.target.value)}>
+                  <label htmlFor="fromDate">From Date</label>
+                  <input type="date" className="form-control" name="from_date" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="toDate">To Date</label>
+                  <input type="date" className="form-control" name="to_date" />
+                </div>
+              <div className="form-group">
+                <label>select clinic</label>
+                <select className="form-control" name="clinic_id">
                   {
                     clinic_options.map((clinic) => (
                       <option key={clinic.uid} value={clinic.uid}>
@@ -77,6 +92,13 @@ function Dashboard1()
                   }
                 </select>
               </div>
+              <div className="form-group">
+                <button className="btn btn-primary" type="submit">
+                  Submit
+                </button>
+              </div>
+              </form>
+
               <div className="form-group">
                 {/* <label htmlFor="email">Input ID</label>
                 <input onChange={(e) => onchng(e.target.value)} type="text" className="form-control" id="id" placeholder="Enter ID"/> */}

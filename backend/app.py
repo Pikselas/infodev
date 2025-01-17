@@ -110,6 +110,7 @@ def fetch_sum_data(from_date:str , to_date:str,clinic_id:int):
 @app.route("/api/get_chart_d" , methods=["POST"])
 @jwt_required()
 def get_data():
-    return jsonify(fetch_sum_data("2024-12-01" , "2024-12-31", request.get_json().get("clinic_id"))) , 200
+    req = request.get_json()
+    return jsonify(fetch_sum_data(req.get("from_date") ,req.get("to_date"), req.get("clinic_id"))) , 200
 
 # print(get_data("2024-12-01" , "2024-12-31" , 101))
