@@ -26,7 +26,7 @@ function Header() {
       </div>
       <nav className="navbar navbar-header navbar-expand-lg">
         <div className="container-fluid">
-          <form className="navbar-left navbar-form nav-search mr-md-3" action="">
+          {/* <form className="navbar-left navbar-form nav-search mr-md-3" action="">
             <div className="input-group">
               <input type="text" placeholder="Search ..." className="form-control" />
               <div className="input-group-append">
@@ -37,7 +37,7 @@ function Header() {
                 </span>
               </div>
             </div>
-          </form>
+          </form> */}
           <ul className="navbar-nav topbar-nav ml-md-auto align-items-center">
             <li className="nav-item dropdown hidden-caret">
               <a
