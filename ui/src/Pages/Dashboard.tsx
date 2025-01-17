@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import PieChart from './PieChart'
-import { ChartItem } from './PieChart';
-import { create_api_request } from './Authenticated';
+import PieChart from '../Components/PieChart'
+import { ChartItem } from '../Components/PieChart';
+import { create_api_request } from '../Utils/Authenticated';
 
 
 function Dashboard1()
