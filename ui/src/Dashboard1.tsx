@@ -68,20 +68,20 @@ function Dashboard1()
             <div className="card">             
               <div className="card-body">
               <form onSubmit={handle_submit}>
-                <div class="row">
+                <div className="row">
                 <div className="col-md-3">
                 <div className="form-group">
                   <label htmlFor="fromDate">From Date</label>
                   <input type="date" className="form-control" name="from_date" />
                 </div>
                   </div>
-                  <div class="col-md-3">
+                  <div className="col-md-3">
                   <div className="form-group">
                   <label htmlFor="toDate">To Date</label>
                   <input type="date" className="form-control" name="to_date" />
                 </div>
                   </div>
-                  <div class="col-md-3">
+                  <div className="col-md-3">
                   <div className="form-group">
                 <label>Select Clinic</label>
                 <select className="form-control" name="clinic_id">
@@ -95,7 +95,7 @@ function Dashboard1()
                 </select>
               </div>
                   </div>                  
-                  <div class="col-md-3">
+                  <div className="col-md-3">
                   <div className="form-group mt-4">
                 <button className="btn btn-primary" type="submit">
                   Submit
@@ -112,66 +112,35 @@ function Dashboard1()
                     <PieChart data={ data } handle_func={(data:ChartItem)=>{}} />
                 </div>
                 </div>
-
-                <table class="table table-hover">
-
+                <table className="table table-hover">
                   <thead>
-
                     <tr>
-
                       <th scope="col">#</th>
-
                       <th scope="col">First</th>
-
                       <th scope="col">Last</th>
-
                       <th scope="col">Handle</th>
-
                     </tr>
-
                   </thead>
-
                   <tbody>
-
                     <tr>
-
                       <td>1</td>
-
                       <td>Mark</td>
-
                       <td>Otto</td>
-
                       <td>@mdo</td>
-
                     </tr>
-
                     <tr>
-
                       <td>2</td>
-
                       <td>Jacob</td>
-
                       <td>Thornton</td>
-
                       <td>@fat</td>
-
                     </tr>
-
                     <tr>
-
                       <td>3</td>
-
-                      <td colspan="2">Larry the Bird</td>
-
+                      <td colSpan={2}>Larry the Bird</td>
                       <td>@twitter</td>
-
                     </tr>
-
                   </tbody>
-
                 </table>
-
-
               </div>
             </div>
           </div>
