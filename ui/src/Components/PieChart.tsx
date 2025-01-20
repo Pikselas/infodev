@@ -1,6 +1,6 @@
 import { ResponsivePie , ComputedDatum } from '@nivo/pie'
 
-export type ChartItem = { id: string; label: string; value: string; color: string };
+export type ChartItem = { id: string; label: string; value: string; color: string , user_data?:any };
 export type PieChartItems = { data: ChartItem[] , handle_func?: (item:ChartItem) => void};
 
 // interface PieChartProps {
