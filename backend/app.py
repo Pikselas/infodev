@@ -5,6 +5,9 @@ import pathlib
 import mysql.connector
 from mysql.connector import Error
 import requests
+import json
+
+from utils import query_executer as qe
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'
@@ -52,19 +55,24 @@ def login():
     connection = create_connection()
     if connection:
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE username = %s AND BINARY password = %s", (username, password))
+        cursor.execute("SELECT employee.emp_code,employee.full_name,employee.email,employee.clinic_uid,master_clinic.clinic_code FROM employee INNER JOIN master_clinic ON employee.clinic_uid = master_clinic.uid WHERE mobile = %s AND BINARY password = %s", (username, password))
         user = cursor.fetchone()
         cursor.close()
         connection.close()
         
         if user:
-            access_token = create_access_token(identity=username)
+            access_token = create_access_token(identity=json.dumps(user))
             return jsonify(access_token=access_token), 200
         else:
             return jsonify({"msg": "Invalid credentials"}), 401
     else:
         return jsonify({"msg": "Database connection failed"}), 500
 
+@app.route('/user/get_details', methods=["POST"])
+@jwt_required()
+def get_user_details():
+    user = get_jwt_identity()
+    return user , 200
 
 @app.route("/api/get_chart_data",methods=["POST"])
 @jwt_required()
@@ -83,7 +91,7 @@ def get_chart_data():
 def get_clinics():
     connection = create_connection()
     cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT uid , clinic_name FROM MASTER_CLINIC")
+    cursor.execute("SELECT uid , clinic_code FROM MASTER_CLINIC")
     res = cursor.fetchall()
     cursor.close()
     return jsonify(res) , 200
@@ -113,4 +121,50 @@ def get_data():
     req = request.get_json()
     return jsonify(fetch_sum_data(req.get("from_date") ,req.get("to_date"), req.get("clinic_id"))) , 200
 
+def get_billing_breakdown(from_date:str , to_date:str , service_id:int , clinic_id:int ):
+    query = "SELECT patient.full_name, billing.patient_uid, billing.service_amount, billing.discount_amount, billing_master.invoice_no, billing_master.bill_prefix FROM `billing` INNER JOIN patient ON billing.patient_uid = patient.uid INNER JOIN billing_master ON billing.billmast_uid = billing_master.uid WHERE billing.service_uid = %s and billing.bill_date BETWEEN %s AND %s AND billing.cancel_flag = 0 AND billing.clinic_uid = %s"
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute(query , (service_id , from_date , to_date , clinic_id))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return ret
+
+@app.route("/api/get_bill_breakdown",methods=["POST"])
+@jwt_required()
+def get_breakdown():
+    req = request.get_json()
+    return jsonify(get_billing_breakdown(req.get("from_date"),req.get("to_date"),req.get("service_id"),req.get("clinic_id")))
+
+@app.route("/api/get_revenue_by_employee",methods=["POST"])
+@jwt_required()
+def get_func():
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        req = request.get_json()
+        cursor.execute(qe.QUERY_GET_REVENUE_BY_EMPLOYEE, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return jsonify(ret) , 200
+
+@app.route("/api/get_revenue_by_payment_mode",methods=["POST"])
+@jwt_required()
+def get_func2():
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        req = request.get_json()
+        cursor.execute(qe.QUERY_GET_REVENUE_BY_PAYMENT_MODE, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return jsonify(ret) , 200
+# print(get_billing_breakdown("2024-12-01" , "2024-12-31",103 , 101))
 # print(get_data("2024-12-01" , "2024-12-31" , 101))

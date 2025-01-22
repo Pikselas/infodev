@@ -1,13 +1,27 @@
 import logo from "../assets/logo.png"
 import profile2 from "../assets/profile2.jpg"
-import profile from "../assets/profile.jpg"
+import profile from "../assets/profile.png"
+import { useState, useEffect } from "react";
+import { create_api_request } from "../Utils/Authenticated";
 
 function Header() {
+  let [user_details , setUserData] = useState<{"full_name":string,"clinic_code":string,"email":string}>();
+
+  const fetch_user = async()=>
+    {
+      let user = await(await create_api_request("http://127.0.0.1:5000/user/get_details")).json()
+      setUserData(user);
+    };
+  useEffect(() => {
+    fetch_user();
+  }, []);
+
   return (
     <div className="main-header">
       <div className="logo-header">
         <a href="#" className="logo">
-          <img src={ logo } width="30" height="30" alt="" /> Dashboard
+          <img src={ logo } width="30" height="30" alt="" /> 
+           medExpert - {user_details?.clinic_code}
         </a>
         <button
           className="navbar-toggler sidenav-toggler ml-auto"
@@ -115,7 +129,7 @@ function Header() {
                   width="36"
                   className="img-circle"
                 />
-                <span>Hizrian</span>
+                <span>{user_details?.full_name}</span>
               </a>
               <ul className="dropdown-menu dropdown-user">
                 <li>
@@ -124,8 +138,8 @@ function Header() {
                       <img src={ profile } alt="user" />
                     </div>
                     <div className="u-text">
-                      <h4>Hizrian</h4>
-                      <p className="text-muted">hello@themekita.com</p>
+                      <h4>{user_details?.full_name}</h4>
+                      <p className="text-muted">{user_details?.email}</p>
                       <a href="profile.html" className="btn btn-rounded btn-danger btn-sm">
                         View Profile
                       </a>
@@ -133,7 +147,7 @@ function Header() {
                   </div>
                 </li>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item" href="#">
+                {/* <a className="dropdown-item" href="#">
                   <i className="ti-user"></i> My Profile
                 </a>{" "}
                 <a className="dropdown-item" href="#">
@@ -145,7 +159,7 @@ function Header() {
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="#">
                   <i className="ti-settings"></i> Account Setting
-                </a>
+                </a> */}
                 <div className="dropdown-divider"></div>
                 <a className="dropdown-item" href="#">
                   <i className="fa fa-power-off"></i> Logout

@@ -1,6 +1,6 @@
 import { ResponsivePie , ComputedDatum } from '@nivo/pie'
 
-export type ChartItem = { id: string; label: string; value: string; color: string };
+export type ChartItem = { id: string; label: string; value: string; color: string , user_data?:any };
 export type PieChartItems = { data: ChartItem[] , handle_func?: (item:ChartItem) => void};
 
 // interface PieChartProps {
@@ -44,31 +44,6 @@ const PieChart = ({ data , handle_func } : PieChartItems) => (
                 ]
             ]
         }}
-        legends={[
-            {
-                anchor: 'bottom',
-                direction: 'row',
-                justify: false,
-                translateX: 0,
-                translateY: 56,
-                itemsSpacing: 0,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: '#999',
-                itemDirection: 'left-to-right',
-                itemOpacity: 1,
-                symbolSize: 18,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
-        ]}
         onClick = {(data:ComputedDatum<ChartItem>)=>{ if(handle_func) handle_func(data.data) }}
     />
 )
