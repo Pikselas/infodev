@@ -1,6 +1,6 @@
 import logo from "../assets/logo.png"
 import profile2 from "../assets/profile2.jpg"
-import profile from "../assets/profile.jpg"
+import profile from "../assets/profile.png"
 import { useState, useEffect } from "react";
 import { create_api_request } from "../Utils/Authenticated";
 

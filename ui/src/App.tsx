@@ -10,13 +10,12 @@ import MainLayout from './Layout/MainLayout';
 function App() {
 
   return (
-    // <DashBoard/>
     <BrowserRouter>
-        {/* <LoggedIn> */}
+        <LoggedIn>
           <MainLayout>
             <AppRoutes/>
           </MainLayout>
-        {/* </LoggedIn> */}
+        </LoggedIn>
         <NotLoggedIn>
           <Login1/>
         </NotLoggedIn>
