@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { create_api_request } from "../Utils/Authenticated";
 import PieChart, { ChartItem } from "../Components/PieChart";
 import PageLayout from "../Layout/PageLayout";
+import RequestForm from "../Layout/RequestForm";
 
 function PaymentModeWiseRevenue() {
-  let [clinic_options, setClinics] = useState<{ uid: string, clinic_code: string }[]>([]);
   let [mode_data, setModeData] = useState<ChartItem[]>([]);
   let [bill_list, setBillList] = useState<{ net_amount: string, receipt_no: number, receipt_prefix: string }[]>([]);
 
-  const fetch_clinics = async () => {
-    let data = await (await create_api_request("/api/get_clinics")).json()
-    setClinics(data);
-  };
-  const handle_submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    let form_data = new FormData(e.target as HTMLFormElement);
-    const fetch_func = async () => {
-      let clinic_id = form_data.get("clinic_id") as string;
-      let from_date = form_data.get("from_date") as string;
-      let to_date = form_data.get("to_date") as string;
+  const fetch_payment_data = async (from_date:string , to_date:string , clinic_id:string) => {
       let data = await create_api_request("/api/get_revenue_by_payment_mode",
         {
           clinic_id: clinic_id,
@@ -35,59 +25,14 @@ function PaymentModeWiseRevenue() {
         };
         return chrt_itm;
       }));
-    };
-    fetch_func();
   };
-
   const fetch_bill_breakdown = async (filter: { payment_mode: string, from_date: string, to_date: string, clinic_id: string }) => {
     let data = await create_api_request("/api/get_bill_breakdown_by_payment_mode", filter);
     setBillList(await data.json());
   }
-  useEffect(() => {
-    fetch_clinics();
-  }, [])
   return (
     <PageLayout>
-      <div className="card-body">
-        <form onSubmit={handle_submit}>
-          <div className="row">
-            <div className="col-md-3">
-              <div className="form-group">
-                <label htmlFor="fromDate">From Date</label>
-                <input type="date" className="form-control" name="from_date"
-                  defaultValue={new Date().toISOString().split('T')[0]} />
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="form-group">
-                <label htmlFor="toDate">To Date</label>
-                <input type="date" className="form-control" name="to_date"
-                  defaultValue={new Date().toISOString().split('T')[0]} />
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="form-group">
-                <label>Select Clinic</label>
-                <select className="form-control" name="clinic_id">
-                  {
-                    clinic_options.map((clinic) => (
-                      <option key={clinic.uid} value={clinic.uid}>
-                        {clinic.clinic_code}
-                      </option>
-                    ))
-                  }
-                </select>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="form-group mt-4">
-                <button className="btn btn-primary" type="submit">
-                  Submit
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
+        <RequestForm onSubmit={fetch_payment_data} />
         <div className="form-group">
           {/* <label htmlFor="email">Input ID</label>
                     <input onChange={(e) => onchng(e.target.value)} type="text" className="form-control" id="id" placeholder="Enter ID"/> */}
@@ -113,7 +58,6 @@ function PaymentModeWiseRevenue() {
             </tbody>
           </table>
         </div>
-      </div>
     </PageLayout>
   );
 }

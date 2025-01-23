@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PieChart from '../Components/PieChart'
 import { ChartItem } from '../Components/PieChart';
 import { create_api_request } from '../Utils/Authenticated';
 import PageLayout from '../Layout/PageLayout';
+import RequestForm from '../Layout/RequestForm';
 
 
 type service_breakdown = { full_name: string, patient_uid: string, service_amount: number, discount_amount: number, bill_prefix: string, invoice_no: number };
 
 function ServiceWiseRevenue() {
   let [data, setData] = useState<ChartItem[]>([]);
-  let [clinic_options, setClinics] = useState<{ uid: string, clinic_code: string }[]>([]);
   let [bill_list, setBill] = useState<service_breakdown[]>([]);
   let fetch_data = async (id: string, from: string, to: string) => {
     let d = await (await create_api_request("/api/get_chart_d", { clinic_id: id, from_date: from, to_date: to })).json()
@@ -31,71 +31,13 @@ function ServiceWiseRevenue() {
     });
     setData(dt);
   };
-  const fetch_clinics = async () => {
-    return await (await create_api_request("/api/get_clinics")).json()
-  };
   const fetch_bill_breakdown = async (fetch_filter: any) => {
     let data = await (await create_api_request("/api/get_bill_breakdown", fetch_filter)).json()
     setBill(data);
   };
-  const handle_submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    let frm_data = new FormData(e.target as HTMLFormElement);
-    let from_date = frm_data.get("from_date") as string;
-    let to_date = frm_data.get("to_date") as string;
-    let clinic_id = frm_data.get("clinic_id") as string;
-    // console.log(from_date , to_date , clinic_id);
-    fetch_data(clinic_id, from_date, to_date);
-  };
-
-  useEffect(() => {
-    const fetcher = async () => {
-      let clinics = await fetch_clinics();
-      setClinics(clinics);
-      await fetch_data(clinics[0].uid, "2024-12-01", "2024-12-31");
-    }
-    fetcher();
-  }, [])
   return (
     <PageLayout>
-      <form onSubmit={handle_submit}>
-        <div className="row">
-          <div className="col-md-3">
-            <div className="form-group">
-              <label htmlFor="fromDate">From Date</label>
-              <input type="date" className="form-control" name="from_date" defaultValue={new Date().toISOString().split('T')[0]} />
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="form-group">
-              <label htmlFor="toDate">To Date</label>
-              <input type="date" className="form-control" name="to_date" defaultValue={new Date().toISOString().split('T')[0]} />
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="form-group">
-              <label>Select Clinic</label>
-              <select className="form-control" name="clinic_id">
-                {
-                  clinic_options.map((clinic) => (
-                    <option key={clinic.uid} value={clinic.uid}>
-                      {clinic.clinic_code}
-                    </option>
-                  ))
-                }
-              </select>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="form-group mt-4">
-              <button className="btn btn-primary" type="submit">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-
+      <RequestForm onSubmit={(from_date: string, to_date: string, clinic_id: string) => { fetch_data(clinic_id, from_date, to_date) }} onClinicFetched={(clinics:{uid:string , clinic_code:string}[])=>{ fetch_data(clinics[0].uid , "2024-12-01" , "2024-12-30") }} />
       <div className="form-group">
         {/* <label htmlFor="email">Input ID</label>
                 <input onChange={(e) => onchng(e.target.value)} type="text" className="form-control" id="id" placeholder="Enter ID"/> */}
