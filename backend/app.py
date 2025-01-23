@@ -166,5 +166,31 @@ def get_func2():
         cursor.close()
         connection.close()
     return jsonify(ret) , 200
-# print(get_billing_breakdown("2024-12-01" , "2024-12-31",103 , 101))
-# print(get_data("2024-12-01" , "2024-12-31" , 101))
+
+@app.route("/api/get_bill_breakdown_by_payment_mode",methods=["POST"])
+@jwt_required()
+def get_func3():
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        req = request.get_json()
+        cursor.execute(qe.QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE, (req.get("payment_mode"), req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return jsonify(ret) , 200
+
+@app.route("/api/get_revenue_by_doctor",methods=["POST"])
+@jwt_required()
+def get_func4():
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        req = request.get_json()
+        cursor.execute(qe.QUERY_GET_REVENUE_BY_DOCTOR, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return jsonify(ret) , 200
