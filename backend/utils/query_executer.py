@@ -16,6 +16,24 @@ QUERY_GET_REVENUE_BY_EMPLOYEE = """
         bill_receipt.entry_by
 """
 
+QUERY_GET_REVENUE_BY_DOCTOR = """
+    SELECT  
+        employee.full_name,
+        billing.doctor_id as id,
+        SUM(billing.service_amount) as revenue 
+    FROM 
+        billing 
+    INNER JOIN 
+        employee 
+        ON employee.uid = billing.doctor_id 
+    WHERE 
+        billing.bill_date BETWEEN %s AND %s 
+    AND 
+        billing.clinic_uid = %s 
+    GROUP BY 
+        billing.doctor_id
+"""
+
 QUERY_GET_REVENUE_BY_PAYMENT_MODE = """
     SELECT 
         bill_receipt.payment_mode as uid, 
@@ -47,22 +65,4 @@ QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE = """
         voucher_date BETWEEN %s AND %s
     AND
         clinic_uid = %s
-"""
-
-QUERY_GET_REVENUE_BY_DOCTOR = """
-    SELECT  
-        SUM(billing.service_amount) as revenue, 
-        billing.doctor_id, 
-        employee.full_name 
-    FROM 
-        billing 
-    INNER JOIN 
-        employee 
-        ON employee.uid = billing.doctor_id 
-    WHERE 
-        billing.bill_date BETWEEN %s AND %s 
-    AND 
-        billing.clinic_uid = %s 
-    GROUP BY 
-        billing.doctor_id
 """

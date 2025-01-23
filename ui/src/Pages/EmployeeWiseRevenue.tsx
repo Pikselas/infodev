@@ -6,7 +6,6 @@ import RequestForm from "../Layout/RequestForm";
 
 function EmployeeWiseRevenue() {
 
-
   let [employee_data, setEmployeeData] = useState<{ full_name: string, id: string, revenue: number }[]>([]);
   const fetch_employee_revenue = async (from_date:string, to_date:string,clinic_id:string) => {
     const url = "/api/get_revenue_by_employee";
