@@ -1,11 +1,12 @@
 // import "./styles/Login1.css"
 // import "./styles/main_style.css"
 import logo from "./assets/logo.png"
+import {BASE_URL} from "./Utils/Authenticated"
 
 async function submit_login_details(formdata:HTMLFormElement)
 {
     try {
-        const API_URL = "http://localhost:5000";
+        const API_URL = BASE_URL;
         const formData = new FormData(formdata);
         const username = formData.get('username');
         const password = formData.get('password');

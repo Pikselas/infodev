@@ -37,8 +37,10 @@ const NotLoggedIn: React.FC<LoggedInProps> = ({ children }: LoggedInProps) => {
     return <></>;
 };
 
+const BASE_URL = "http://127.0.01:5000";
+
 function create_api_request(path: string, body?: any) {
-    return fetch(path, {
+    return fetch(BASE_URL + path, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
@@ -48,4 +50,4 @@ function create_api_request(path: string, body?: any) {
     });
 }
 
-export { LoggedIn, NotLoggedIn, create_api_request };
+export { LoggedIn, NotLoggedIn, create_api_request , BASE_URL};

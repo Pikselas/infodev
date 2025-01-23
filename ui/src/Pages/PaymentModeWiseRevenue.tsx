@@ -9,7 +9,7 @@ function PaymentModeWiseRevenue() {
 
     const fetch_clinics = async ()=>
     {
-        let data = await(await create_api_request("http://127.0.0.1:5000/api/get_clinics")).json()
+        let data = await(await create_api_request("/api/get_clinics")).json()
         setClinics(data);
     };
     const handle_submit = (e:React.FormEvent) =>
@@ -21,7 +21,7 @@ function PaymentModeWiseRevenue() {
                 let clinic_id = form_data.get("clinic_id") as string;
                 let from_date = form_data.get("from_date") as string;
                 let to_date =  form_data.get("to_date") as string;
-                let data = await create_api_request("http://127.0.0.1:5000/api/get_revenue_by_payment_mode",
+                let data = await create_api_request("/api/get_revenue_by_payment_mode",
                 {
                     clinic_id: clinic_id,
                     from_date: from_date,
@@ -43,7 +43,7 @@ function PaymentModeWiseRevenue() {
     
     const fetch_bill_breakdown = async(filter:{ payment_mode:string , from_date:string , to_date:string , clinic_id:string })=>
     {
-        let data = await create_api_request("http://127.0.0.1:5000/api/get_bill_breakdown_by_payment_mode" , filter);
+        let data = await create_api_request("/api/get_bill_breakdown_by_payment_mode" , filter);
         setBillList(await data.json());
     }
     useEffect(()=>

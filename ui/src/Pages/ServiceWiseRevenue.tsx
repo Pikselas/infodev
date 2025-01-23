@@ -13,7 +13,7 @@ function ServiceWiseRevenue()
     let [bill_list , setBill] = useState<service_breakdown[]>([]);
     let fetch_data = async (id:string , from:string,to:string)=>
         {  
-          let d = await (await create_api_request("http://127.0.0.1:5000/api/get_chart_d" , {clinic_id:id,from_date:from,to_date:to})).json() 
+          let d = await (await create_api_request("/api/get_chart_d" , {clinic_id:id,from_date:from,to_date:to})).json() 
           let dt:ChartItem[] = [];
           type d_type = {"service_id":number , "service_name":string , "sum_net": number};
           d.forEach((value : d_type) => {
@@ -34,11 +34,11 @@ function ServiceWiseRevenue()
         };
     const fetch_clinics = async ()=>
     {
-      return await(await create_api_request("http://127.0.0.1:5000/api/get_clinics")).json()
+      return await(await create_api_request("/api/get_clinics")).json()
     };
     const fetch_bill_breakdown = async (fetch_filter:any)=>
     {
-      let data = await(await create_api_request("http://127.0.0.1:5000/api/get_bill_breakdown" , fetch_filter)).json()
+      let data = await(await create_api_request("/api/get_bill_breakdown" , fetch_filter)).json()
       setBill(data);
     };
     const handle_submit = (e:React.FormEvent) =>

@@ -9,7 +9,7 @@ function EmployeeWiseRevenue() {
     const fetch_employee_revenue = async (e:React.FormEvent) => {
     e.preventDefault();
     const form_data = new FormData(e.target as HTMLFormElement);
-    const url = "http://127.0.0.1:5000/api/get_revenue_by_employee";
+    const url = "/api/get_revenue_by_employee";
     const data = await create_api_request(url, {
       clinic_id: form_data.get("clinic_id") as string,
       from_date: form_data.get("from_date") as string,
@@ -21,7 +21,7 @@ function EmployeeWiseRevenue() {
   let [clinic_options,setClinics] = useState<{uid:string , clinic_code:string}[]>([]);
   const fetch_clinics = async ()=>
     {
-        let data = await(await create_api_request("http://127.0.0.1:5000/api/get_clinics")).json()
+        let data = await(await create_api_request("/api/get_clinics")).json()
         // console.log(data);
         setClinics(data);
     };
