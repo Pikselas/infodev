@@ -1,3 +1,4 @@
+# #################### TOTAL REVENUE #####################
 QUERY_GET_REVENUE_BY_EMPLOYEE = """
     SELECT 
         employee.full_name,
@@ -56,7 +57,8 @@ QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE = """
     SELECT 
         receipt_prefix, 
         receipt_no, 
-        net_amount 
+        net_amount,
+        entry_date_time
     FROM 
         bill_receipt 
     WHERE 
@@ -65,4 +67,23 @@ QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE = """
         voucher_date BETWEEN %s AND %s
     AND
         clinic_uid = %s
+"""
+
+# ######################## PATIENT REGISTRATION ####################
+
+QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE = """
+    SELECT 
+        COUNT(appointment_register.patient_uid) as total_patient, 
+        CASE
+            WHEN appointment_register.app_type = 1 THEN 'New Patients'
+            WHEN appointment_register.app_type = 2 THEN 'Old Patients'
+        END AS patient_status 
+    FROM 
+        appointment_register 
+    WHERE 
+        DATE(appointment_register.entry_date_time) BETWEEN %s AND %s 
+    AND 
+        appointment_register.clinic_id = %s 
+    GROUP BY 
+        appointment_register.app_type
 """

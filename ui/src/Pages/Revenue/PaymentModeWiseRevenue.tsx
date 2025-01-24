@@ -6,7 +6,7 @@ import RequestForm from "../../Layout/RequestForm";
 
 function PaymentModeWiseRevenue() {
   let [mode_data, setModeData] = useState<ChartItem[]>([]);
-  let [bill_list, setBillList] = useState<{ net_amount: string, receipt_no: number, receipt_prefix: string }[]>([]);
+  let [bill_list, setBillList] = useState<{ net_amount: string, receipt_no: number, receipt_prefix: string , entry_date_time:string  }[]>([]);
 
   const fetch_payment_data = async (from_date:string , to_date:string , clinic_id:string) => {
       let data = await create_api_request("/api/get_revenue_by_payment_mode",
@@ -46,6 +46,7 @@ function PaymentModeWiseRevenue() {
               <tr>
                 <th scope="col">Receipt No</th>
                 <th scope="col">Net Amount</th>
+                <th scope="col">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -53,6 +54,7 @@ function PaymentModeWiseRevenue() {
                 <tr key={index}>
                   <td>{bill.receipt_prefix + bill.receipt_no.toString().padStart(9, '0')}</td>
                   <td>{bill.net_amount}</td>
+                  <td>{bill.entry_date_time}</td>
                 </tr>
               ))}
             </tbody>

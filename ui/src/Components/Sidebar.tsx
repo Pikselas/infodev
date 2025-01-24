@@ -103,6 +103,9 @@ function SideBar(){
             <SideBarItem Name="Payment-Mode" Path="/revenue/payment_mode" Icon="la-keyboard-o" />
             <SideBarItem Name="Doctor" Path="/revenue/doctor" Icon="la-keyboard-o" />
           </CollapsableCollection>
+          <CollapsableCollection Name="Patient" Icon="fa-table">
+            <SideBarItem Name="New v/s Old" Path="/patient/new_vs_old" Icon="la-table" />
+          </CollapsableCollection>
       </ul>
     </div>
   </div>

@@ -6,6 +6,7 @@ import mysql.connector
 from mysql.connector import Error
 import requests
 import json
+from datetime import datetime , timezone , timedelta
 
 from utils import query_executer as qe
 
@@ -151,7 +152,7 @@ def get_func():
         ret = cursor.fetchall()
         cursor.close()
         connection.close()
-    return jsonify(ret) , 200
+    return jsonify(ret), 200
 
 @app.route("/api/get_revenue_by_payment_mode",methods=["POST"])
 @jwt_required()
@@ -179,6 +180,9 @@ def get_func3():
         ret = cursor.fetchall()
         cursor.close()
         connection.close()
+        for row in ret:
+            if 'entry_date_time' in row and isinstance(row['entry_date_time'], datetime):
+                row['entry_date_time'] = row['entry_date_time'].strftime('%Y-%m-%d %H:%M:%S')
     return jsonify(ret) , 200
 
 @app.route("/api/get_revenue_by_doctor",methods=["POST"])
@@ -190,6 +194,20 @@ def get_func4():
         cursor = connection.cursor(dictionary=True)
         req = request.get_json()
         cursor.execute(qe.QUERY_GET_REVENUE_BY_DOCTOR, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        ret = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    return jsonify(ret) , 200
+
+@app.route("/api/get_total_patient_by_type",methods=["POST"])
+@jwt_required()
+def get_func5():
+    connection = create_connection()
+    ret = []
+    if connection:
+        cursor = connection.cursor(dictionary=True)
+        req = request.get_json()
+        cursor.execute(qe.QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
         ret = cursor.fetchall()
         cursor.close()
         connection.close()
