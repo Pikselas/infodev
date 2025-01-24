@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import PieChart from '../Components/PieChart'
-import { ChartItem } from '../Components/PieChart';
-import { create_api_request } from '../Utils/Authenticated';
-import PageLayout from '../Layout/PageLayout';
-import RequestForm from '../Layout/RequestForm';
+import PieChart from '../../Components/PieChart'
+import { ChartItem } from '../../Components/PieChart';
+import { create_api_request } from '../../Utils/Authenticated';
+import PageLayout from '../../Layout/PageLayout';
+import RequestForm from '../../Layout/RequestForm';
 
 
 type service_breakdown = { full_name: string, patient_uid: string, service_amount: number, discount_amount: number, bill_prefix: string, invoice_no: number };

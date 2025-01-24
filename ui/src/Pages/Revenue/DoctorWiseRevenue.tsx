@@ -1,8 +1,8 @@
 import { useState } from "react";
-import BarChart from "../Components/BarChart";
-import PageLayout from "../Layout/PageLayout";
-import RequestForm from "../Layout/RequestForm";
-import { create_api_request } from "../Utils/Authenticated";
+import BarChart from "../../Components/BarChart";
+import PageLayout from "../../Layout/PageLayout";
+import RequestForm from "../../Layout/RequestForm";
+import { create_api_request } from "../../Utils/Authenticated";
 
 function DoctorWiseRevenue()
 {

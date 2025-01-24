@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { create_api_request } from "../Utils/Authenticated";
-import PieChart, { ChartItem } from "../Components/PieChart";
-import PageLayout from "../Layout/PageLayout";
-import RequestForm from "../Layout/RequestForm";
+import { create_api_request } from "../../Utils/Authenticated";
+import PieChart, { ChartItem } from "../../Components/PieChart";
+import PageLayout from "../../Layout/PageLayout";
+import RequestForm from "../../Layout/RequestForm";
 
 function PaymentModeWiseRevenue() {
   let [mode_data, setModeData] = useState<ChartItem[]>([]);

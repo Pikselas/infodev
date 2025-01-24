@@ -97,11 +97,11 @@ function SideBar(){
         <div className="scrollbar-inner sidebar-wrapper">
         <ul className="nav">
           {/* <SideBarOptions/> */}
-          <SideBarItem Name="Home" Path="/" Icon="la-dashboard"/>
+          <SideBarItem Name="Home" Path="/revenue/service" Icon="la-dashboard"/>
           <CollapsableCollection Name="Revenue" Icon="fa-table">
-            <SideBarItem Name="Employee" Path="/employee_wise_revenue" Icon="la-table" />
-            <SideBarItem Name="Payment-Mode" Path="/payment_mode_wise_revenue" Icon="la-keyboard-o" />
-            <SideBarItem Name="Doctor" Path="/doctor_wise_revenue" Icon="la-keyboard-o" />
+            <SideBarItem Name="Employee" Path="/revenue/employee" Icon="la-table" />
+            <SideBarItem Name="Payment-Mode" Path="/revenue/payment_mode" Icon="la-keyboard-o" />
+            <SideBarItem Name="Doctor" Path="/revenue/doctor" Icon="la-keyboard-o" />
           </CollapsableCollection>
       </ul>
     </div>
