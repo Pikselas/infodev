@@ -9,7 +9,7 @@ function Header() {
 
   const fetch_user = async()=>
     {
-      let user = await(await create_api_request("http://127.0.0.1:5000/user/get_details")).json()
+      let user = await(await create_api_request("/user/get_details")).json()
       setUserData(user);
     };
   useEffect(() => {

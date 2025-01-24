@@ -6,6 +6,7 @@ import mysql.connector
 from mysql.connector import Error
 import requests
 import json
+from datetime import datetime , timezone , timedelta , date
 
 from utils import query_executer as qe
 
@@ -139,32 +140,45 @@ def get_breakdown():
     req = request.get_json()
     return jsonify(get_billing_breakdown(req.get("from_date"),req.get("to_date"),req.get("service_id"),req.get("clinic_id")))
 
-@app.route("/api/get_revenue_by_employee",methods=["POST"])
-@jwt_required()
-def get_func():
+# query , request parameters , parameters order
+def serve_request(request:request , query:str , params:tuple):
     connection = create_connection()
     ret = []
     if connection:
         cursor = connection.cursor(dictionary=True)
         req = request.get_json()
-        cursor.execute(qe.QUERY_GET_REVENUE_BY_EMPLOYEE, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
+        param_values = tuple(req.get(param) for param in params)
+        cursor.execute(query, param_values)
         ret = cursor.fetchall()
         cursor.close()
         connection.close()
+        for row in ret:
+            for key, value in row.items():
+                if isinstance(value, (datetime, date)):
+                    row[key] = value.strftime('%Y-%m-%d %H:%M:%S')
     return jsonify(ret) , 200
+
+@app.route("/api/get_revenue_by_employee",methods=["POST"])
+@jwt_required()
+def get_revenue_by_employee():
+    return serve_request(request , qe.QUERY_GET_REVENUE_BY_EMPLOYEE , ("from_date","to_date","clinic_id"))
 
 @app.route("/api/get_revenue_by_payment_mode",methods=["POST"])
 @jwt_required()
-def get_func2():
-    connection = create_connection()
-    ret = []
-    if connection:
-        cursor = connection.cursor(dictionary=True)
-        req = request.get_json()
-        cursor.execute(qe.QUERY_GET_REVENUE_BY_PAYMENT_MODE, (req.get("from_date"), req.get("to_date"), req.get("clinic_id")))
-        ret = cursor.fetchall()
-        cursor.close()
-        connection.close()
-    return jsonify(ret) , 200
-# print(get_billing_breakdown("2024-12-01" , "2024-12-31",103 , 101))
-# print(get_data("2024-12-01" , "2024-12-31" , 101))
+def get_revenue_by_payment_mode():
+    return serve_request(request , qe.QUERY_GET_REVENUE_BY_PAYMENT_MODE , ("from_date","to_date","clinic_id"))
+
+@app.route("/api/get_bill_breakdown_by_payment_mode",methods=["POST"])
+@jwt_required()
+def get_bill_breakdown_by_payment_mode():
+    return serve_request(request , qe.QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE , ("payment_mode","from_date","to_date","clinic_id"))
+
+@app.route("/api/get_revenue_by_doctor",methods=["POST"])
+@jwt_required()
+def get_revenue_by_doctor():
+    return serve_request(request , qe.QUERY_GET_REVENUE_BY_DOCTOR , ("from_date","to_date","clinic_id"))
+
+@app.route("/api/get_total_patient_by_type",methods=["POST"])
+@jwt_required()
+def get_total_patient_by_type():
+    return serve_request(request , qe.QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE , ("from_date","to_date","clinic_id"))
