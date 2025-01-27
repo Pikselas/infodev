@@ -87,3 +87,35 @@ QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE = """
     GROUP BY 
         appointment_register.app_type
 """
+
+QUERY_GET_PATIENT_ADMISSIONS_BY_TYPE = """
+    SELECT 
+        appointment_register.patient_uid, 
+        appointment_register.name, 
+        appointment_register.approve_date, 
+        appointment_register.entry_date_time 
+    FROM 
+        appointment_register 
+    WHERE 
+        appointment_register.approve_date BETWEEN %s AND %s 
+    AND 
+        appointment_register.app_type = %s 
+    AND 
+        appointment_register.clinic_id = %s
+"""
+
+QUERY_GET_PATIENT_SOURCE_TOTAL = """
+    SELECT 
+        COUNT(patient.uid) as total_patients, 
+        patient.sourceMedium as source_id, 
+        master_misc.misc_name as source_name
+    FROM 
+        patient 
+    INNER JOIN 
+        master_misc 
+        ON master_misc.uid = patient.sourceMedium 
+    WHERE 
+        DATE(patient.entry_date_time) BETWEEN %s AND %s 
+    GROUP BY 
+        patient.sourceMedium
+"""

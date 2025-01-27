@@ -106,6 +106,7 @@ function SideBar(){
           <CollapsableCollection Name="Patient" Icon="fa-table">
             <SideBarItem Name="New v/s Old" Path="/patient/new_vs_old" Icon="la-table" />
           </CollapsableCollection>
+          <SideBarItem Name="Promotions" Path="/others/promotion" Icon="la-table" />
       </ul>
     </div>
   </div>

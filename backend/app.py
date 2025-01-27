@@ -154,8 +154,10 @@ def serve_request(request:request , query:str , params:tuple):
         connection.close()
         for row in ret:
             for key, value in row.items():
-                if isinstance(value, (datetime, date)):
+                if isinstance(value, datetime):
                     row[key] = value.strftime('%Y-%m-%d %H:%M:%S')
+                elif isinstance(value, date):
+                    row[key] = value.strftime('%Y-%m-%d')
     return jsonify(ret) , 200
 
 @app.route("/api/get_revenue_by_employee",methods=["POST"])
@@ -178,7 +180,17 @@ def get_bill_breakdown_by_payment_mode():
 def get_revenue_by_doctor():
     return serve_request(request , qe.QUERY_GET_REVENUE_BY_DOCTOR , ("from_date","to_date","clinic_id"))
 
-@app.route("/api/get_total_patient_by_type",methods=["POST"])
+@app.route("/api/get_total_patient_admissions",methods=["POST"])
 @jwt_required()
 def get_total_patient_by_type():
-    return serve_request(request , qe.QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE , ("from_date","to_date","clinic_id"))
+    return serve_request(request , qe.QUERY_GET_TOTAL_PATIENT_ADMISSIONS , ("from_date","to_date","clinic_id"))
+
+@app.route("/api/get_patient_admissions_by_type",methods=["POST"])
+@jwt_required()
+def get_patient_admissions_by_type():
+    return serve_request(request , qe.QUERY_GET_PATIENT_ADMISSIONS_BY_TYPE , ("from_date","to_date","app_type","clinic_id"))
+
+@app.route("/api/get_patient_source_total",methods=["POST"])
+@jwt_required()
+def get_patient_total_by_source():
+    return serve_request(request , qe.QUERY_GET_PATIENT_SOURCE_TOTAL , ("from_date","to_date"))
