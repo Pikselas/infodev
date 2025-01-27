@@ -71,9 +71,10 @@ QUERY_GET_BILL_BREAKDOWN_BY_PAYMENT_MODE = """
 
 # ######################## PATIENT REGISTRATION ####################
 
-QUERY_GET_TOTAL_PATIENT_ADMISSION_BY_TYPE = """
+QUERY_GET_TOTAL_PATIENT_ADMISSIONS = """
     SELECT 
-        COUNT(appointment_register.patient_uid) as total_patient, 
+        COUNT(appointment_register.patient_uid) as total_patient,
+        appointment_register.app_type, 
         CASE
             WHEN appointment_register.app_type = 1 THEN 'New Patients'
             WHEN appointment_register.app_type = 2 THEN 'Old Patients'
