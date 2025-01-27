@@ -18,7 +18,7 @@ function EmployeeWiseRevenue() {
   };
 
   return (
-    <PageLayout>
+    <PageLayout title="Employee Wise Revenue">
         <RequestForm onSubmit={fetch_employee_revenue} />
         <div className="form-group">
           {/* <label htmlFor="email">Input ID</label>

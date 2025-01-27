@@ -1,9 +1,10 @@
 import React from "react";
 interface PageLayoutProps 
 {
-    children: React.ReactNode;
+  title?: string;
+  children: React.ReactNode;
 }
-const PageLayout:React.FC<PageLayoutProps> = ({children}:PageLayoutProps) =>
+const PageLayout:React.FC<PageLayoutProps> = ({title,children}:PageLayoutProps) =>
 {
     return (
     <div className="main-panel">
@@ -12,6 +13,9 @@ const PageLayout:React.FC<PageLayoutProps> = ({children}:PageLayoutProps) =>
           <div className="row">
             <div className="col-md-12">
               <div className="card">
+               <div className="card-header">
+                <div className="card-title">{title}</div>
+                </div>
                 <div className="card-body">
                     {
                         children

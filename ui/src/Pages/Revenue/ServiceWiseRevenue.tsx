@@ -36,7 +36,7 @@ function ServiceWiseRevenue() {
     setBill(data);
   };
   return (
-    <PageLayout>
+    <PageLayout title="Service Wise Revenue">
       <RequestForm onSubmit={(from_date: string, to_date: string, clinic_id: string) => { fetch_data(clinic_id, from_date, to_date) }} onClinicFetched={(clinics:{uid:string , clinic_code:string}[])=>{ fetch_data(clinics[0].uid , "2024-12-01" , "2024-12-30") }} />
       <div className="form-group">
         {/* <label htmlFor="email">Input ID</label>

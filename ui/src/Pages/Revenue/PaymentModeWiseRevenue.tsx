@@ -31,7 +31,7 @@ function PaymentModeWiseRevenue() {
     setBillList(await data.json());
   }
   return (
-    <PageLayout>
+    <PageLayout title="Payment Mode Wise Revenue">
         <RequestForm onSubmit={fetch_payment_data} />
         <div className="form-group">
           {/* <label htmlFor="email">Input ID</label>

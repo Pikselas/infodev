@@ -17,7 +17,7 @@ function DoctorWiseRevenue()
         setEmployeeData(await data.json());
       };
     return (
-        <PageLayout>
+        <PageLayout title="Doctor Wise Revenue">
             <RequestForm onSubmit={fetch_employee_revenue} />
             <div style={{ width: "100%", height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                 <BarChart X_axisName="Doctor Name" Y_axisName="Revenue Generated" IndexBy="full_name" NumericKeyName="revenue" Data={employee_data} />

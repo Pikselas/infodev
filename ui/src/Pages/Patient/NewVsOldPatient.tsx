@@ -28,7 +28,7 @@ function DoctorWiseRevenue()
             setData(new_data);
         };
     return (
-        <PageLayout>
+        <PageLayout title="Patient Admissions">
             <RequestForm onSubmit={fetch_total_patient} />
             <div style={{ width: "100%", height: '500px', display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
                 <PieChart data={data} handle_func={(data: ChartItem) => { 
@@ -59,7 +59,7 @@ function DoctorWiseRevenue()
               ))}
             </tbody>
           </table>
-            </div>
+        </div>
         </PageLayout>
     );
 }
