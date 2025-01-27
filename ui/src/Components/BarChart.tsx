@@ -13,6 +13,9 @@ interface BarChartData {
     Data: BarDatum[];
 }
 
+const colors = ['#e8c1a0', '#f47560', '#f1e15b', '#e8a838', '#61cdbb', '#97e3d5'];
+
+
 const BarChart: React.FC<BarChartData> = ({ X_axisName, Y_axisName, IndexBy, NumericKeyName, Data }) => (
     <ResponsiveBar
         data={Data}
@@ -22,7 +25,7 @@ const BarChart: React.FC<BarChartData> = ({ X_axisName, Y_axisName, IndexBy, Num
         padding={0.3}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
+        colors={({ id, data }) => colors[Number(data[NumericKeyName]) % colors.length]}
         borderColor={{
             from: 'color',
             modifiers: [['darker', 1.6]],
